@@ -3,15 +3,17 @@ FROM python:3.9-slim
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONBUFFERED=1
 
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
+		postgresql-client \
+	&& rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 COPY requirements.txt .
 
-RUN \
-    apk add --no-cache postgresql-libs && \
-    apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev && \
-    pip install -r requirements.txt --no-cache-dir && \
-    apk --purge del .build-deps
+RUN pip install -r requirements.txt --no-cache-dir
+
 
 COPY . .
 
