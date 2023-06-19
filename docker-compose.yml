@@ -10,8 +10,8 @@ services:
       - .:/app
     command: python manage.py runserver 0.0.0.0:8000
     depends_on:
-      - db
-  db:
+      - database
+  database:
     image: postgres:15.0
     environment:
       - POSTGRES_PASSWORD=<database_password>
